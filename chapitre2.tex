@@ -1,0 +1,75 @@
+%! TeX root = these.tex
+\chapter{Titre d'un chapitre}\label{chap:chap_2}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pellentesque ante ut velit tincidunt rhoncus. Ut aliquam consectetur tempor. Nulla luctus nisl at urna placerat tristique. Suspendisse tempus iaculis nisl at suscipit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla vel libero placerat enim scelerisque interdum quis nec tortor. Quisque fermentum rhoncus dolor sodales sollicitudin. Donec quis mi nisi, quis blandit nulla. Pellentesque varius ipsum ut tortor pretium vel eleifend diam iaculis. Aenean nulla ligula, congue in placerat non, varius ut nibh.
+
+\section{Exemples avancés}
+
+Suspendisse tempus iaculis nisl at suscipit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+
+\subsection{Équations}
+
+\begin{equation}
+  \label{eq:eq_1}
+  \sum_{i=0}^n i = \frac{n(n+1)}{2}
+\end{equation}
+
+Il est possible de référencer l'Équation \ref{eq:eq_1} dans le texte.
+
+\subsection{Théorèmes et preuves}
+
+Il faut d'abord définir les environnements.
+
+\newtheorem{theorem}{Théorème}
+\newtheorem{corollary}{Corollaire}
+\newtheorem{lemma}{Lemme}
+\newtheorem{definition}{Definition}
+\newtheorem{proof}{Preuve}
+
+\begin{theorem}
+  \label{theo:theo_1}
+  Soit $f$ une fonction dont la dérivée existe en chaque point, alors $f$
+  est une fonction continue.
+\end{theorem}
+
+\begin{theorem}[Théorème de Pythagore]
+  \label{theo:theo_2}
+  C'est un théorème sur les triangles rectangles et peut se résumer par
+  l'équation suivante
+  \[ x^2 + y^2 = z^2 \]
+\end{theorem}
+
+\begin{corollary}
+  \label{coro:coro_1}
+  Il n'existe pas de triangle rectangle dont les côtés mesurent 3 cm, 4 cm, et 6 cm.
+\end{corollary}
+
+\begin{lemma}
+  \label{lem:lem_1}
+  Étant donné deux segments de longueur $a$ et $b$ respectivement, il existe un nombre réel $r$ tel que $b=ra$.
+\end{lemma}
+
+\begin{definition}[Fibration]
+  \label{def:def_1}
+  Une fibration est une application entre deux espaces topologiques qui possède la propriété de relèvement de l'homotopie pour tout espace $X$.
+\end{definition}
+
+\begin{proof}
+  \label{proof:proof_1}
+  Pour démontrer cela par contradiction, supposez que l'énoncé est faux,   procédez à partir de là et à un certain moment, vous arriverez à une contradiction.
+\end{proof}
+
+Vous pouvez ensuite référencer les théorèmes \ref{theo:theo_1} et \ref{theo:theo_2}, ainsi que le corollaire \ref{coro:coro_1} et le Lemme \ref{lem:lem_1} dans votre texte. De plus, la définition \ref{def:def_1} et la démonstration \ref{proof:proof_1} peuvent également être référencées dans le texte.
+
+\subsection{Code source}
+
+On peut inclure du code source avec un environment \verb+lstlisting+.
+
+\begin{lstlisting}[caption=Exemple de code]
+for (i=0; i < 10; ++i) {
+  // code
+}
+\end{lstlisting}
+
+
+%% :wrap=soft:

@@ -1,0 +1,175 @@
+%% -----------------------------------------------------------------------
+%% Modèle de thèse/mémoire/essai DIM UQAC
+%% 
+%% Options de la classe:
+%%   - these, sujthese, projthese, memoire, essai, rapport: pour générer la
+%%     page de garde en fonction du type document
+%%   - francais, english : selon la langue dans laquelle doit être rédigé
+%%     le document
+%%   - brouillon: à utiliser pendant la rédaction, vérifications moins
+%%     strictes sur la syntaxe et la mise en forme
+%%   - toutes les options de la classe "book" sont acceptées
+%% -----------------------------------------------------------------------
+\documentclass[francais,brouillon,these]{uqac-these-dim}
+
+%% Pour utiliser les caractères accentués. Assurez-vous que
+%% votre éditeur texte sauvegarde les fichiers en utilisant l'encodage UTF-8
+\usepackage[utf8]{inputenc}
+
+%% ------------------------
+%% Quelques définitions
+%% ------------------------
+
+%% Titre du document. Ne pas l'écrire tout en majuscules!
+\newcommand{\UqacTheseTitre}{Applications du convecteur temporel:
+  une étude empirique}
+
+%% Auteur du document
+\newcommand{\UqacTheseAuteur}{Emmett Brown}
+
+%% Date (mois année) du document
+\newcommand{\UqacTheseDate}{Novembre 1955}
+
+%% Indiquer le programme
+\programme{informatique}
+
+%% S'il y a lieu, indiquer le profil ou la concentration du programme
+%\concentration{profil recherche}
+
+%% Toutes les images utilisées doivent se trouver dans le dossier fig
+\graphicspath{{fig/}}
+
+%% Déclaration des acronymes
+\input acronymes.tex
+
+%% ------------------------------
+%% Packages optionnels
+%% 
+%% Ajoutez ici les instructions \usepackage pour charger les packages dont a
+%% besoin votre document. Tous ces packages sont *optionnels*; ne les chargez
+%% que si votre code source les utilise. En plus des packages suggérés ici,
+%% vous pouvez évidemment charger tout autre package.
+%% ------------------------------
+
+%% Pour générer des PDF/A (le format demandé par l'UQAC lors du dépôt
+%% final). Il est recommandé de décommenter cette ligne seulement pour
+%% la production de l'ultime PDF du dépôt final.
+%\usepackage[a-1b]{pdfx}
+
+%% Permet de commenter des blocs de texte
+\usepackage{comment}
+
+%% Pour inclure des listings de code source
+\usepackage{listings}
+\lstset{
+  language=Java,
+  basicstyle=\linespread{1.1}\ttfamily\small,
+  columns=flexible
+}
+\addto\captionsfrench{
+  \renewcommand{\lstlistlistingname}{Liste des sources}
+}
+\addto\captionsenglish{
+  \renewcommand{\lstlistlistingname}{List of Sources}
+}
+
+% Pour l'index
+\makeindex
+
+%% ------------------------
+%% Création des méta-données PDF
+%% ------------------------
+\makeatletter
+\newcommand{\UqacTheseVersion}{\@uqactheseversion}
+\makeatother
+\hypersetup{%
+  pdfauthor = {\UqacTheseAuteur},
+  pdftitle = {\UqacTheseTitre},
+  pdfproducer = {Package uqac-these-dim V\UqacTheseVersion}
+}
+
+%% Début du document
+\begin{document}
+
+%% ------------------------
+%% Création de la page titre
+%% ------------------------
+\title{\UqacTheseTitre}
+\author{\UqacTheseAuteur}
+\date{\UqacTheseDate}
+\thispagestyle{empty}
+\maketitle
+
+%% ------------------------
+%% Pages préliminaires
+%% ------------------------
+\frontmatter
+\singlespacing
+
+%% \include{avant-propos} %% Facultatif
+\phantomsection
+\include{resume} % <-- Ne pas effacer! Cette section est *obligatoire* à l'UQAC!
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{\contentsname}
+\tableofcontents
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{\lstlistlistingname}
+\lstlistoflistings
+\cleardoublepage
+
+%\chapter*{Liste des abréviations}
+%\addcontentsline{toc}{chapter}{Liste des acronymes}
+\phantomsection
+\printacronyms
+
+%% ------------------------
+%% Document principal
+%% ------------------------
+\mainmatter
+\doublespacing
+\include{introduction}
+\include{chapitre1}
+\include{chapitre2}
+%% ...
+%% Ajoutez autant de commandes include qu'il y a de chapitres à
+%% inclure dans votre document
+%% ...
+\include{conclusion}
+
+%% ------------------------
+%% Bibliograhpie
+%% ------------------------
+\backmatter
+
+%% Liste des fichiers source pour la bibliograhpie.
+%% On peut inclure plus d'un fichier en séparant leurs noms par des
+%% virgules.
+\phantomsection
+\singlespacing
+\bibliography{these}
+\doublespacing
+
+%% ------------------------
+%% Annexes (le cas échéant)
+%% ------------------------
+\appendix
+\include{annexe}
+
+%% Décommenter cette ligne pour afficher l'index
+% \printindex
+
+\end{document}
