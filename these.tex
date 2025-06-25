@@ -4,7 +4,7 @@
 %% Options de la classe:
 %%   - these, sujthese, projthese, memoire, essai, rapport: pour générer la
 %%     page de garde en fonction du type document
-%%   - francais, english : selon la langue dans laquelle doit être rédigé
+%%   - francais, anglais : selon la langue dans laquelle doit être rédigé
 %%     le document
 %%   - brouillon: à utiliser pendant la rédaction, vérifications moins
 %%     strictes sur la syntaxe et la mise en forme
@@ -20,26 +20,26 @@
 %% Quelques définitions
 %% ------------------------
 
-%% Titre du document. Ne pas l'écrire tout en majuscules!
-\newcommand{\UqacTheseTitre}{Applications du convecteur temporel:
-  une étude empirique}
+%% Indiquer le programme
+\discipline{informatique}
 
 %% Auteur du document
-\newcommand{\UqacTheseAuteur}{Emmett Brown}
+\author{Emmett Brown}
 
-%% Date (mois année) du document
-\newcommand{\UqacTheseDate}{Novembre 1955}
+%% Titre du document. Ne pas l'écrire tout en majuscules!
+\title{Applications du convecteur temporel: une étude empirique}
 
-%% Indiquer le programme
-\programme{informatique}
+%% Année du document
+\date{1955}
 
-%% S'il y a lieu, indiquer le profil ou la concentration du programme
-%\concentration{profil recherche}
-
+%% ------------------------------
 %% Toutes les images utilisées doivent se trouver dans le dossier fig
+%% ------------------------------
 \graphicspath{{fig/}}
 
-%% Déclaration des acronymes
+%% ------------------------------
+%% Déclaration des acronymes (facultatif)
+%% ------------------------------
 \input acronymes.tex
 
 %% ------------------------------
@@ -50,11 +50,6 @@
 %% que si votre code source les utilise. En plus des packages suggérés ici,
 %% vous pouvez évidemment charger tout autre package.
 %% ------------------------------
-
-%% Pour générer des PDF/A (le format demandé par l'UQAC lors du dépôt
-%% final). Il est recommandé de décommenter cette ligne seulement pour
-%% la production de l'ultime PDF du dépôt final.
-%\usepackage[a-1b]{pdfx}
 
 %% Permet de commenter des blocs de texte
 \usepackage{comment}
@@ -73,20 +68,10 @@
   \renewcommand{\lstlistlistingname}{List of Sources}
 }
 
-% Pour l'index
+%% ------------------------
+%% Index
+%% ------------------------
 \makeindex
-
-%% ------------------------
-%% Création des méta-données PDF
-%% ------------------------
-\makeatletter
-\newcommand{\UqacTheseVersion}{\@uqactheseversion}
-\makeatother
-\hypersetup{%
-  pdfauthor = {\UqacTheseAuteur},
-  pdftitle = {\UqacTheseTitre},
-  pdfproducer = {Package uqac-these-dim V\UqacTheseVersion}
-}
 
 %% Début du document
 \begin{document}
@@ -94,9 +79,8 @@
 %% ------------------------
 %% Création de la page titre
 %% ------------------------
-\title{\UqacTheseTitre}
-\author{\UqacTheseAuteur}
-\date{\UqacTheseDate}
+\thispagestyle{empty}
+\maketitle
 \thispagestyle{empty}
 \maketitle
 
@@ -111,29 +95,34 @@
 \include{resume} % <-- Ne pas effacer! Cette section est *obligatoire* à l'UQAC!
 \cleardoublepage
 
+%% Table des matières
 \phantomsection
-\addcontentsline{toc}{chapter}{\contentsname}
-\tableofcontents
+\pagestyle{fancy}
+\SansTableOfContents
 \cleardoublepage
 
+%% Liste des tableaux
 \phantomsection
-\addcontentsline{toc}{chapter}{\listtablename}
-\listoftables
+\pagestyle{fancy}
+\SansListOfTables
 \cleardoublepage
 
+%% Liste des figures
 \phantomsection
-\addcontentsline{toc}{chapter}{\listfigurename}
-\listoffigures
+\pagestyle{fancy}
+\SansListOfFigures
 \cleardoublepage
 
+%% Liste des sources
 \phantomsection
-\addcontentsline{toc}{chapter}{\lstlistlistingname}
-\lstlistoflistings
+\pagestyle{fancy}
+\SansListOfSources
 \cleardoublepage
 
-%\chapter*{Liste des abréviations}
-%\addcontentsline{toc}{chapter}{Liste des acronymes}
+%% Liste des abréviations
+\chapterwithtoc{Liste des abréviations}
 \phantomsection
+\pagestyle{fancy}
 \printacronyms
 
 %% ------------------------
@@ -160,7 +149,7 @@
 %% virgules.
 \phantomsection
 \singlespacing
-\bibliography{these}
+\SansBibliography{these}
 \doublespacing
 
 %% ------------------------
@@ -173,3 +162,5 @@
 % \printindex
 
 \end{document}
+%% Codes pour jEdit
+%% :mode=latex:wrap=none:

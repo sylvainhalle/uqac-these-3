@@ -25,74 +25,93 @@
 %% Déclarations
 %% ------------------------
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{uqac-these-dim}[2024/11/04 These DIM UQAC, V3.0 par Sylvain Halle \& Florentin Thullier]
 
 %% ------------------------
-%% Numéro de version
+%% Version et date du package
 %% ------------------------
-\def\@uqactheseversion{3.0}
+\def\uqacVersion{3.0}
+\def\uqacDate{2025/06/20}
+\makeatletter
+\ProvidesClass{uqac-these-dim}[\uqacDate These DIM UQAC, V\uqacVersion par Sylvain Hallé \& Florentin Thullier]
+\makeatother
+
+%% ------------------------
+%% Commande permettant de définir la discipline du mémoire ou de la thèse.
+%% Utilisée pour générer la page titre.
+%% ------------------------
+\makeatletter
+\newcommand{\discipline}[1]{%
+\def\uqacProgramme{#1}
+}
+
+\def\uqacConcentration{}
+\newcommand{\concentration}[1]{%
+\def\uqacConcentration{#1}
+}
+\makeatother
 
 %% ------------------------
 %% Choix du type de document
 %% ------------------------
 %% Thèse
-\def\@uqacthese{false}
 \DeclareOption{these}{%
-  \def\@uqacthese{true}
+  \def\uqacType{THESE}
 }
 
 %% Projet de thèse
-\def\@uqacprojthese{false}
 \DeclareOption{projthese}{%
-  \def\@uqacprojthese{true}
+  \def\uqacType{PROJETTHESE}
 }
 
 %% Sujet de thèse
-\def\@uqacsujthese{false}
 \DeclareOption{sujthese}{%
-  \def\@uqacsujthese{true}
+  \def\uqacType{SUJETTHESE}
 }
 
 %% Mémoire
-\def\@uqacmemoire{false}
+\def\uqacmemoire{false}
 \DeclareOption{memoire}{%
-  \def\@uqacmemoire{true}
+  \def\uqacType{MEMOIRE}
 }
 
 %% Essai
-\def\@uqacessai{false}
+\def\uqacessai{false}
 \DeclareOption{essai}{%
-  \def\@uqacessai{true}
+  \def\uqacType{ESSAI}
 }
 
 %% Rapport
-\def\@uqacrapport{false}
+\def\uqacrapport{false}
 \DeclareOption{rapport}{%
-  \def\@uqacrapport{true}
+  \def\uqacType{RAPPORT}
 }
 
 %% ------------------------
 %% Choix de la langue du document
 %% ------------------------
-%% French
-\def\@uqacfrench{false}
+\makeatletter
+%% Français
+\def\uqacFrancais{false}
 \DeclareOption{francais}{%
-  \def\@uqacfrench{true}
+  \def\uqacFrancais{true}
 }
 
-%% English
-\def\@uqacenglish{false}
-\DeclareOption{rapport}{%
-  \def\@uqacenglish{true}
+%% Anglais
+\def\uqacAnglais{false}
+\DeclareOption{anglais}{%
+  \def\uqacAnglais{true}
 }
+\makeatother
 
 %% ------------------------
 %% Option brouillon
 %% ------------------------
-\def\@uqacpdcbrouillon{false} %% Pas brouillon par défaut
+\makeatletter
+\def\uqacModeBrouillon{false} %% Pas brouillon par défaut
 \DeclareOption{brouillon}{%
-  \def\@uqacpdcbrouillon{true}
+  \def\uqacModeBrouillon{true}
 }
+\makeatother
 
 %% ------------------------
 %% Passage des autres options à la classe book
@@ -115,17 +134,20 @@
 %% On ne met ici que les packages dont l'absence empêche la compilation
 %% du template vide. Incluez vos autres packages (optionnels) dans la thèse.
 %% ------------------------
-\RequirePackage{geometry}
 \RequirePackage[T1]{fontenc}
+%% Gestion des marges
+\RequirePackage{geometry}
+%% Inclusion d'images
 \RequirePackage{graphicx}
-\RequirePackage{ifthen}
+%% En-tête et pied de page
 \let\footruleskip\undefined\RequirePackage{fancyhdr}
+%% Formatage des titres et sous-titres
 \RequirePackage[explicit]{titlesec}
 %% Formatage des légendes de tableaux et figures
 \RequirePackage{caption}
+%% Mise en majuscules de la page titre et des en-tête de chapitres
 \RequirePackage{textcase}
-%% Pour interligne simple dans les listes (table des matières, etc.) et
-%% double dans le reste
+%% Interligne simple dans les listes (table des matières, etc.), double ailleurs
 \RequirePackage{setspace}
 %% Paramètres de la table des matières
 \RequirePackage{tocloft}
@@ -133,29 +155,43 @@
 \RequirePackage{textcase}
 %% On ne pagine pas pages vides
 \RequirePackage{emptypage}
-%% Liste des acronymes
-\RequirePackage{acro}
 %% Requis par le style bibliographique IEEEtran
-\RequirePackage{amsmath}
+%\RequirePackage{unicode-math}
 %% Gestion de la bibliographie, doit être chargé avant babel
 \RequirePackage[numbers]{natbib}
 %% Pour le rectangle "brouillon" sur la page titre
-\RequirePackage{color}
+\RequirePackage[x11names]{xcolor}
 %% Pour faire des rectangles avec la commande "todo"
 \RequirePackage{mdframed}
-%% Babel en anglais ou en français
-\ifthenelse{\equal{\@uqacenglish}{true}}{%
-  \RequirePackage[english]{babel}
-}{
+%% Pour évaluer des conditions plus facilement qu'en TeX brut
+\RequirePackage{ifthen}
+
+%% ------------------------
+%% Chargement conditionnel de babel selon la langue
+%% Pour une raison étrange, Babel français hard-code l'usage de petites
+%% majuscules pour le mot "Figure"; on doit donc le redéfinir
+%% ------------------------
+\makeatletter
+\ifthenelse{\equal{\uqacFrancais}{true}}{
   \RequirePackage[french]{babel}
-}
+}{\ifthenelse{\equal{\uqacAnglais}{true}}{
+  \RequirePackage[english]{babel}
+}{}}
+\makeatother
 
 %% ------------------------
 %% Ces packages doivent être chargés après babel
-%% -----------------------
-\RequirePackage[babel]{microtype} %% Meilleure typographie
-\RequirePackage{caption} %% Pour définir les légendes des figures
-\RequirePackage[hidelinks,bookmarks=true]{hyperref} %% Méta-données PDF
+%% ------------------------
+%% Meilleure typographie
+\RequirePackage[babel]{microtype}
+%% Pour définir les légendes des figures
+\RequirePackage{caption}
+%% Liste des acronymes
+\RequirePackage{acro}
+%% Gestion des méta-données PDF et affichage des URLs
+\RequirePackage[pdfa]{hyperref}
+\usepackage{hyperxmp}[2020/03/01]
+\usepackage{embedfile}[2020/04/01]
 
 %% ------------------------
 %% Définition des polices par défaut
@@ -173,12 +209,26 @@
   \selectfont}
 
 %% ------------------------
+%% Définition de la commande \todo. Deux versions existent: la version finale
+%% déclenche une erreur de compilation, alors que la version brouillon affiche
+%% une boîte colorée avec du texte.
+%% ------------------------
+\newcommand{\todoFinal}[1]{%
+  \ClassError{uqac-these-dim}{Il reste des todo dans le document: #1}{Le document n'est pas en mode brouillon et il reste des occurrences de la commande todo. Assurez-vous que tous les todos sont réglés pour compiler le document en mode final.}%
+}
+\newcommand{\todoBrouillon}[1]{%
+  \fcolorbox{red}{red!20}{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
+    \textbf{TODO:} #1%
+  }}%
+}
+
+%% ------------------------
 %% Si l'option brouillon n'est pas active, le comportement de certaines
 %% commandes change
 %% ------------------------
-\ifthenelse{\equal{\@uqacpdcbrouillon}{false}}{%
+\ifthenelse{\equal{\uqacModeBrouillon}{false}}{%
   %% Les todo provoquent des erreurs de compilation
-  \newcommand{\todo}[1]{\ClassError{uqac-these-dim}{Il reste des todo dans le document: #1}{Le document n'est pas en mode brouillon et il reste des occurrences de la commande todo. Assurez-vous que tous les todos sont réglés pour compiler le document en mode final.}}
+  \let\todo=\todoFinal
   %% Les références non-définies provoquent des erreurs de compilation
   \RequirePackage{nag}
   %% Tout ce qui dépasse de la marge provoque une erreur de compilation
@@ -186,34 +236,51 @@
   \WarningFilter{latex}{Overfull \hbox}
 }{
   %% Les todo sont visibles
-  \newcommand{\todo}[1]{%
-        \fcolorbox{red}{red!20}{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
-            \textbf{TODO:} #1%
-        }}%
-  }
+  \let\todo=\todoBrouillon
 }
+
+%% ------------------------
+%% Uniformisation du texte de certaines légendes
+%% ------------------------
+\makeatletter
+\newcommand{\fixfrenchcaptions}{%
+  \AddToHook{begindocument/end}{%
+    \def\FB@sc##1{##1}%
+    \renewcommand{\figurename}{Figure}%
+    \renewcommand{\tablename}{Tableau}%
+    \renewcommand{\lstlistlistingname}{Liste des sources}
+    \renewcommand{\listfigurename}{Liste des figures}
+  }%
+}
+\newcommand{\fixenglishcaptions}{%
+  \AddToHook{begindocument/end}{%
+    \def\FB@sc##1{##1}%
+    \renewcommand{\lstlistlistingname}{List of Sources}
+  }%
+}
+\makeatother
 
 %% ------------------------
 %% Paramètres spécifiques à la langue du document
 %% ------------------------
-\ifthenelse{\equal{\@uqacfrench}{true}}{%
+\ifthenelse{\equal{\uqacFrancais}{true}}{%
 %% Français
   %% Pas d'alinéas et une ligne vide
   \setlength{\parindent}{0pt}
   \setlength{\parskip}{10pt}
   %% Biblio en français
+  \fixfrenchcaptions
   \bibliographystyle{IEEEtranSN_francais}
 }{%
 %% Anglais
   %% Biblio en anglais
+  \fixenglishcaptions
   \bibliographystyle{IEEEtranSN}
 }
 
 %% ------------------------
 %% Interlignes
-%% -----------------------
-\newlength{\simpleinter}
-\setlength{\simpleinter}{\baselineskip}
+%% ------------------------
 \newlength{\doubleinter}
 \setlength{\doubleinter}{1\baselineskip}
 
@@ -253,22 +320,20 @@
 %% ------------------------
 %% Style des titres et sous-titres
 %% ------------------------
-\titleformat{\chapter}%
-[block]%
-{\centering\bfseries\selectfont}%
-{\MakeTextUppercase{Chapitre \thechapter}}% Titre du chapitre
-{0cm}% Séparation d'avec le corps du chapitre
-{\vskip 0pt\MakeTextUppercase{#1}}% Code à exécuter avant le titre
-{}% Code à exécuter après le titre
 
-\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
-\titleformat{\section}%
-[hang]%
-{\bfseries\selectfont}%
-{\MakeTextUppercase{\thesection}}% Titre du chapitre
-{0.5cm}% Séparation d'avec le corps du chapitre
-{\MakeTextUppercase{#1}}% Code à exécuter avant le titre
-{}% Code à exécuter après le titre
+% Style for numbered chapters
+\titleformat{\chapter}[block]%
+  {\centering\sffamily\bfseries\selectfont}%
+  {\MakeTextUppercase{Chapitre \thechapter}}%
+  {0cm}%
+  {\vskip 0pt\MakeTextUppercase{#1}}%
+
+% Style for unnumbered chapters (e.g., LoF, Bibliography)
+\titleformat{name=\chapter,numberless}[block]%
+  {\normalfont\centering\sffamily\bfseries\selectfont}%
+  {}%
+  {0cm}%
+  {\vskip 0pt\MakeTextUppercase{#1}}%
 
 \renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
 \titleformat{\subsection}%
@@ -280,11 +345,11 @@
 {}% Code à exécuter après le titre
 
 %% Les chapitres sans numéro apparaissent dans la table des matières aussi
-\let\stdchapter\chapter
-\renewcommand*\chapter{%
-  \@ifstar{\starchapter}{\@dblarg\nostarchapter}}
-\newcommand*\starchapter[1]{\addcontentsline{toc}{chapter}{#1}\stdchapter*{#1}}
-\def\nostarchapter[#1]#2{\stdchapter[{#1}]{#2}}
+\newcommand{\chapterwithtoc}[1]{%
+  \chapter*{#1}%
+  \addcontentsline{toc}{chapter}{#1}%
+  \markboth{#1}{#1}%
+}
 
 %% ------------------------
 %% Légende des figures
@@ -296,8 +361,10 @@
 \captionsetup[table]{name=Tableau}
 \renewcommand{\captionfont}{\normalfont\small\bfseries}
 
+%% ------------------------
 %% Redéfinition des termes en français et en anglais
-\ifthenelse{\equal{\@uqacfrench}{true}}{%
+%% ------------------------
+\ifthenelse{\equal{\uqacFrancais}{true}}{%
 	\addto\captionsfrench{%
 	   \renewcommand\contentsname{Table des mati\`eres}}
 	\addto\captionsfrench{%
@@ -330,96 +397,76 @@
 }
 
 %% ------------------------
-%% Notes de bas de page
-%% ------------------------
-\setlength{\footnotesep}{\doubleinter}
-\renewcommand{\@makefntext}[1]%
-  {\setlength{\parindent}{2em}%
-   \makebox[1.8em][r]{\@makefnmark}#1}
-\renewcommand{\footnoterule}{
- \noindent
- \rule{4cm}{0.4pt}
-}
-\counterwithout*{footnote}{chapter}
-
-%% ------------------------
 %% Bouts de texte apparaissant sur la page couverture, en fonction des
 %% options passées au document
 %% ------------------------
-\def\concentration#1{\gdef\@concentration{#1}}
-\concentration{}
-\def\degreeyear#1{\gdef\@degreeyear{#1}}
-\def\programme#1{\gdef\@programme{#1}}
-\programme{}
-\degreeyear{\the\year}
-\ifthenelse{\equal{\@uqacfrench}{true}}{%
-  \def\@uqacauteurpar{par}}{
-  \def\@uqacauteurpar{by}
+\ifthenelse{\equal{\uqacFrancais}{true}}{%
+  \def\uqacauteurpar{par}}{
+  \def\uqacauteurpar{by}
 }
-
-\ifthenelse{\equal{\@uqacthese}{true}}{%
-	\ifthenelse{\equal{\@uqacfrench}{true}}{%
+\ifthenelse{\equal{\uqacType}{THESE}}{%
+	\ifthenelse{\equal{\uqacFrancais}{true}}{%
   		\gdef\thesetype{\textbf{\MakeUppercase{th\`ese}}}
-   		\gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) en \expandafter\expandafter{\@programme}}}}
+   		\gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) en \expandafter\expandafter{\uqacProgramme}}}}
    		\gdef\accord{e}
 	}{
 		\gdef\thesetype{\textbf{\MakeUppercase{thesis}}}
-   		\gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) in the subject of \expandafter\expandafter{\@programme}}}}
+   		\gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) in the subject of \expandafter\expandafter{\uqacProgramme}}}}
    		\gdef\accord{e}
 	}
 }{%
-	\ifthenelse{\equal{\@uqacprojthese}{true}}{%
-		\ifthenelse{\equal{\@uqacfrench}{true}}{%
+	\ifthenelse{\equal{\uqacType}{PROJETTHESE}}{%
+		\ifthenelse{\equal{\uqacFrancais}{true}}{%
 	  		\gdef\thesetype{\textbf{\MakeUppercase{projet de th\`ese}}}
-	   		\gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) en \expandafter\expandafter{\@programme}}}}
+	   		\gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) en \expandafter\expandafter{\uqacProgramme}}}}
 	   		\gdef\accord{}
    		}{
    			\gdef\thesetype{\textbf{\MakeUppercase{thesis project}}}
-	   		\gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) in the subject of \expandafter\expandafter{\@programme}}}}
+	   		\gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) in the subject of \expandafter\expandafter{\uqacProgramme}}}}
 	   		\gdef\accord{}
    		}
 	}{
-    \ifthenelse{\equal{\@uqacsujthese}{true}}{%
-      \ifthenelse{\equal{\@uqacfrench}{true}}{%
-          \gdef\thesetype{\textbf{\MakeUppercase{sujet de th\`ese}}}
-          \gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) en \expandafter\expandafter{\@programme}}}}
+    \ifthenelse{\equal{\uqacType}{SUJETTHESE}}{%
+      \ifthenelse{\equal{\uqacFrancais}{true}}{%
+          \gdef\thesetype{\textbf{\MakeUppercase{sujet de thèse}}}
+          \gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) en \expandafter\expandafter{\uqacProgramme}}}}
           \gdef\accord{}
         }{
           \gdef\thesetype{\textbf{\MakeUppercase{thesis subject}}}
-          \gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) in the subject of \expandafter\expandafter{\@programme}}}}
+          \gdef\thesegrade{\textbf{\MakeUppercase{philosophi\ae{} doctor (Ph.D.) in the subject of \expandafter\expandafter{\uqacProgramme}}}}
           \gdef\accord{}
         }
     }{
-      \ifthenelse{\equal{\@uqacmemoire}{true}}{%
-        \ifthenelse{\equal{\@uqacfrench}{true}}{%
-            \gdef\thesetype{\textbf{\MakeUppercase{m\'emoire}}}
-            \gdef\thesegrade{\textbf{\MakeUppercase{ma\^itre \`es sciences en \expandafter\expandafter{\@programme}}}}
+      \ifthenelse{\equal{\uqacType}{MEMOIRE}}{%
+        \ifthenelse{\equal{\uqacFrancais}{true}}{%
+            \gdef\thesetype{\textbf{\MakeUppercase{mémoire}}}
+            \gdef\thesegrade{\textbf{\MakeUppercase{maître ès sciences en \expandafter\expandafter{\uqacProgramme}}}}
           \gdef\accord{}
         }{
-          \gdef\thesetype{\textbf{\MakeUppercase{master thesis}}}
-            \gdef\thesegrade{\textbf{\MakeUppercase{master of science in the subject of \expandafter\expandafter{\@programme}}}}
+          \gdef\thesetype{\textbf{\MakeUppercase{Master's thesis}}}
+            \gdef\thesegrade{\textbf{\MakeUppercase{Master of Science in the subject of \expandafter\expandafter{\uqacProgramme}}}}
           \gdef\accord{}
         }
       }{
-        \ifthenelse{\equal{\@uqacessai}{true}}{%
-          \ifthenelse{\equal{\@uqacfrench}{true}}{%
+        \ifthenelse{\equal{\uqacType}{ESSAI}}{%
+          \ifthenelse{\equal{\uqacFrancais}{true}}{%
               \gdef\thesetype{\textbf{\MakeUppercase{essai}}}
-              \gdef\thesegrade{\textbf{\MakeUppercase{ma\^itre \`es sciences en \expandafter\expandafter{\@programme}}}}
+              \gdef\thesegrade{\textbf{\MakeUppercase{ma\^itre \`es sciences en \expandafter\expandafter{\uqacProgramme}}}}
             \gdef\accord{}
           }{
             \gdef\thesetype{\textbf{\MakeUppercase{research essay}}}
-              \gdef\thesegrade{\textbf{\MakeUppercase{master of science in the subject of \expandafter\expandafter{\@programme}}}}
+              \gdef\thesegrade{\textbf{\MakeUppercase{Master of Science in the subject of \expandafter\expandafter{\uqacProgramme}}}}
             \gdef\accord{}
           }
         }{
-          \ifthenelse{\equal{\@uqacrapport}{true}}{%
-            \ifthenelse{\equal{\@uqacfrench}{true}}{%
+          \ifthenelse{\equal{\uqacType}{RAPPORT}}{%
+            \ifthenelse{\equal{\uqacFrancais}{true}}{%
                 \gdef\thesetype{\textbf{\MakeUppercase{rapport de recherche}}}
-                \gdef\thesegrade{\textbf{\MakeUppercase{ma\^itre \`es sciences en \expandafter\expandafter{\@programme}}}}
+                \gdef\thesegrade{\textbf{\MakeUppercase{maître ès sciences en \expandafter\expandafter{\uqacProgramme}}}}
               \gdef\accord{}
             }{
               \gdef\thesetype{\textbf{\MakeUppercase{research report}}}
-                \gdef\thesegrade{\textbf{\MakeUppercase{master of science in the subject of \expandafter\expandafter{\@programme}}}}
+                \gdef\thesegrade{\textbf{\MakeUppercase{Master of Science in the subject of \expandafter\expandafter{\uqacProgramme}}}}
               \gdef\accord{}
             }
           }
@@ -430,8 +477,24 @@
 }
 
 %% ------------------------
+%% Notes de bas de page
+%% ------------------------
+\makeatletter
+\setlength{\footnotesep}{\doubleinter}
+\renewcommand{\@makefntext}[1]%
+  {\setlength{\parindent}{2em}%
+   \makebox[1.8em][r]{\@makefnmark}#1}
+\renewcommand{\footnoterule}{
+ \noindent
+ \rule{4cm}{0.4pt}
+}
+\makeatother
+\counterwithout*{footnote}{chapter}
+
+%% ------------------------
 %% Rendu de la page couverture
 %% ------------------------
+\makeatletter
 \renewcommand{\maketitle}{%
 \begin{titlepage}
 \begin{center}
@@ -444,31 +507,31 @@
 
 \vfill
 
-\textbf{\MakeUppercase{\expandafter{\@uqacauteurpar} \expandafter{\@author}}}
+\textbf{\MakeUppercase{\expandafter{\uqacauteurpar} \expandafter{\@author}}}
 
 \vfill
 
 \thesetype{}
-\ifthenelse{\equal{\@uqacfrench}{true}}{%
-	\textbf{\MakeUppercase{pr\'esent\'e\accord{} à l'Universit\'e du Qu\'ebec \`a Chicoutimi comme exigence partielle en vue de l'obtention du grade de}}
+\ifthenelse{\equal{\uqacFrancais}{true}}{%
+	\textbf{\MakeUppercase{présenté\accord{} à l'Université du Québec à Chicoutimi comme exigence partielle en vue de l'obtention du grade de}}
 }{
-	\textbf{\MakeUppercase{presented to Université du Qu\'ebec \`a Chicoutimi in partial fulfillment of the requierments for the degree of}}
+	\textbf{\MakeUppercase{presented to Université du Québec à Chicoutimi in partial fulfillment of the requierments for the degree of}}
 }
 \thesegrade{}
-\ifx\@concentration\empty
+\ifx\uqacConcentration\empty
 \else
-\textbf{\MakeUppercase{\@concentration}}
+\textbf{\MakeUppercase{\uqacConcentration}}
 \fi
 \vfill
 
 \textbf{\MakeUppercase{Qu\'ebec, Canada}}
 \vfill
 
-\textbf{\MakeUppercase{\textcopyright{} \@author, \@degreeyear}}
+\textbf{\MakeUppercase{\textcopyright{} \@author, \@date}}
 \vfill
 \end{spacing}
 %% Rectangle rouge indiquant le mode brouillon le cas échéant
-\ifthenelse{\equal{\@uqacpdcbrouillon}{true}}{%
+\ifthenelse{\equal{\uqacModeBrouillon}{true}}{%
  \noindent\colorbox{red!20}{%
         \parbox{0.9\textwidth}{%
             \centering
@@ -479,6 +542,7 @@
 \end{center}
 \end{titlepage}
 }
+\makeatother
 
 %% Gestion des lignes orphelines
 \widowpenalty10000
@@ -526,6 +590,10 @@
 % Limit the depth of the TOC to chapters and sections only
 \setcounter{tocdepth}{1}
 
+%% ------------------------
+%% Ajustement des espacements verticaux
+%% ------------------------
+
 %% Espacements avant et après les équations
 \BeforeBeginEnvironment{equation}{\vspace{-0.5cm}}
 \AfterEndEnvironment{equation}{\vspace{-0.5cm}}
@@ -544,7 +612,9 @@
 \BeforeBeginEnvironment{algorithm}{\vspace{1cm}}
 \AfterEndEnvironment{algorithm}{\vspace{1cm}}
 
+%% ------------------------
 %% Formatage des légendes pour les figures et les tableaux
+%% ------------------------
 \captionsetup[figure]{%
   position=bottom,
   labelfont={bf, small, stretch=1.17},
@@ -568,8 +638,122 @@
 }
 \DeclareCaptionLabelSeparator{colon}{ : }
 
+%% ------------------------
+%% Style des titres de listes de figures, tableaux, etc. afin qu'ils soient
+%% semblables à ceux des chapitres. Étonnamment, il est très difficile de
+%% modifier ce formatage, car les déclarations sont hard-codées à un très
+%% bas niveau.
+%% ------------------------
+\makeatletter
+
+%% Table des matières
+\newcommand{\SansTableOfContents}{%
+  \cleardoublepage
+  \thispagestyle{plain}%
+  \vspace*{2.35cm}%
+  {\centering
+    \sffamily\bfseries\selectfont
+    \MakeTextUppercase{\contentsname}\par
+  }%
+  \vspace{1cm}\par
+  \addcontentsline{toc}{chapter}{\contentsname}%
+  \begingroup
+    \let\clearpage\relax
+    \let\cleardoublepage\relax
+    \@starttoc{toc}%
+  \endgroup
+}
+
+%% Liste des figures
+\newcommand{\SansListOfFigures}{%
+  \cleardoublepage
+  \thispagestyle{plain}%
+  \vspace*{2.35cm}%
+  {\centering
+    \sffamily\bfseries\selectfont
+    \MakeTextUppercase{\listfigurename}\par
+  }%
+  \vspace{1cm}\par
+  \addcontentsline{toc}{chapter}{\listfigurename}%
+  \begingroup
+    \let\clearpage\relax
+    \let\cleardoublepage\relax
+    \@starttoc{lof}%
+  \endgroup
+}
+
+%% Liste des tableaux
+\newcommand{\SansListOfTables}{%
+  \cleardoublepage
+  \thispagestyle{plain}%
+  \vspace*{2.35cm}%
+  {\centering
+    \sffamily\bfseries\selectfont
+    \MakeTextUppercase{\listtablename}\par
+  }%
+  \vspace{1cm}\par
+  \addcontentsline{toc}{chapter}{\listtablename}%
+  \begingroup
+    \let\clearpage\relax
+    \let\cleardoublepage\relax
+    \@starttoc{lot}%
+  \endgroup
+}
+
+%% Liste des sources
+\newcommand{\SansListOfSources}{%
+  \cleardoublepage
+  \thispagestyle{plain}%
+  \vspace*{2.35cm}%
+  {\centering
+    \sffamily\bfseries\selectfont
+    \MakeTextUppercase{\lstlistlistingname}\par
+  }%
+  \vspace{1cm}\par
+  \addcontentsline{toc}{chapter}{\lstlistlistingname}%
+  \begingroup
+    \let\clearpage\relax
+    \let\cleardoublepage\relax
+    \@starttoc{lol}%
+  \endgroup
+}
+
+%% Bibliographie
+\newcommand{\SansBibliography}[1]{%
+  \cleardoublepage
+  \thispagestyle{plain}%
+  \vspace*{2.35cm}%
+  {\centering
+    \sffamily\bfseries\selectfont
+    \MakeTextUppercase{\bibname}\par
+  }%
+  \vspace{1cm}\par
+  \addcontentsline{toc}{chapter}{\bibname}%
+  \bibliography{#1}%
+}
+
+\makeatother
+
 %% Environnements verbatim à simple interligne par défaut
 \BeforeBeginEnvironment{verbatim}{\def\baselinestretch{1}}
+
+%% ------------------------
+%% Création des méta-données PDF. Cette section du code s'assure également que
+%% le document produit soit conforme au standard PDF/A, ce qui requiert quelques
+%% manipulations (https://tex.stackexchange.com/a/535849).
+%% ------------------------
+\makeatletter
+\hypersetup{%
+  pdflang=la,
+  pdfapart=3, %set to 1 for PDF/A-1
+  pdfaconformance=B
+  hidelinks,
+  bookmarks = {true},
+  pdfauthor = {\@author},
+  pdftitle = {\@title},
+  pdfproducer = {Package uqac-these-dim V\uqacVersion}
+}
+\makeatother
 
 %% Codes pour jEdit
 %% :mode=latex:wrap=none:
