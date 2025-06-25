@@ -1,8 +1,8 @@
 %% --------------------------------------------------------------------------
 %% Classe essai/mémoire/thèse DIM UQAC
 %%
-%% uqac-these-dim.cls
-%% Copyright 2012-2024 Sylvain Hallé, Florentin Thullier
+%% uqac-these.cls
+%% Copyright 2012-2025 Sylvain Hallé, Florentin Thullier
 %%
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3
@@ -30,10 +30,8 @@
 %% Version et date du package
 %% ------------------------
 \def\uqacVersion{3.0}
-\def\uqacDate{2025/06/20}
-\makeatletter
-\ProvidesClass{uqac-these-dim}[\uqacDate These DIM UQAC, V\uqacVersion par Sylvain Hallé \& Florentin Thullier]
-\makeatother
+\def\uqacDate{2025/06/25}
+\ProvidesClass{uqac-these}[\uqacDate These DIM UQAC, V\uqacVersion par Sylvain Hallé \& Florentin Thullier]
 
 %% ------------------------
 %% Commande permettant de définir la discipline du mémoire ou de la thèse.

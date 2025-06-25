@@ -46,13 +46,18 @@ Pour travailler en local, il faut minimalement:
 Il est également possible de créer un nouveau projet sur
 [Overleaf](https://overleaf.com), et de simplement téléverser tous les
 documents de ce dépôt afin de pouvoir travailler. On doit définir
-`these.tex` comme étant le document principal.
+`these.tex` comme étant le document principal et `pdflatex` comme
+compilateur.
 
 Documentation LaTeX
 -------------------
 
-Le contenu du gabarit fournit tous les exemples dont vous pourriez avoir
-besoin pour la rédaction d'un texte en informatique:
+La meilleure référence pour apprendre LaTeX s'appelle
+[Une courte introduction à LaTex](https://ctan.org/tex-archive/info/lshort/french).
+
+Sinon, le contenu du gabarit fournit en version condensée tous les exemples
+dont vous pourriez avoir besoin pour la rédaction d'un texte en
+informatique:
 
 - **Chapitre I**:
   - listes
@@ -231,7 +236,7 @@ inclure une figure.
 
 ### Warnings et erreurs
 
-N'ignorez pas les warnings, et encore moins les erreurs. Même si la
+N'ignorez pas les *warnings*, et encore moins les erreurs. Même si la
 compilation peut se rendre jusqu'au bout en appuyant sur Enter pour passer
 par-dessus ces messages, la manoeuvre a des chances de ne pas fonctionner
 sur tous les ordinateurs. Presque toujours, la présence d'un message
@@ -242,22 +247,8 @@ Production du PDF final
 
 L'UQAC demande à ce que le PDF final soit au format
 [PDF/A](https://en.wikipedia.org/wiki/PDF/A), selon le *Guide de création
-des fichiers pour le dépôt final*. Comme vous utilisez LaTeX, vous êtes
-épargné du processus fastidieux décrit dans ce document (et qui s'applique
-aux utilisateurs de Word). Vous n'avez qu'à retirer l'option `brouillon` de
-la déclaration `\documentclass` et à recompiler.
-
-Assurez-vous d'utiliser une version récente du package (2017 ou après), car
-d'anciennes versions sont boguées et empêchent votre document de compiler.
-De plus, le package n'écrit pas correctement la méta-donnée `Author` dans le
-PDF généré. Pour l'ajouter, vous devez aller écrire votre nom dans le
-fichier `these.info`, puis taper à la ligne de commande
-
-    make metadata
-
-Cette option nécessite que
-[pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
-soit installé.
+des fichiers pour le dépôt final*. La gabarit produit des documents PDF/A
+par défaut, il n'y a donc rien de spécial à faire pour cette étape.
 
 À propos de ce gabarit
 ----------------------
@@ -271,6 +262,6 @@ simplification reprenant les meilleurs éléments des deux anciens modèles,
 tout en ajoutant de nouvelles fonctionnalités. C'est pourquoi il porte la
 version 3.
 
-2024-11-04
+2025-06-25
 
 <!-- wrap=hard:maxLineLen=76: -->
