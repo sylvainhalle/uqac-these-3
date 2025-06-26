@@ -153,7 +153,24 @@
 \fi
 
 %% ------------------------
-%% Redéfinition de \title et \author pour captuer les méta-données PDF
+%% Injection d'une section OutputIntents spécifiant un profil de couleur.
+%% Ceci est obligatoire pour se conformer au standard PDF/A-3b et n'est pas
+%% fait directement par pdflatex.
+%% ------------------------
+\immediate\pdfobj stream attr{/N 3} file{sRGB_IEC61966-2-1_black_scaled.icc}
+\pdfcatalog{%
+  /OutputIntents [ <<
+    /Type /OutputIntent
+    /S /GTS_PDFA1
+    /OutputCondition (sRGB IEC61966-2.1)
+    /OutputConditionIdentifier (sRGB)
+    /Info (sRGB IEC61966-2.1)
+    /DestOutputProfile \the\pdflastobj\space 0 R
+  >> ]
+}
+
+%% ------------------------
+%% Redéfinition de \title et \author pour capturer les méta-données PDF.
 %% ------------------------
 \makeatletter
 \newcommand{\uqacTitle}{}
@@ -783,7 +800,7 @@
 \hypersetup{%
   unicode,
   hidelinks,%
-  pdfapart=2,
+  pdfapart=3,
   pdfaconformance=B,
   keeppdfinfo,
   pdfcreator={Gabarit de th\`ese UQAC DIM v\uqacVersion}

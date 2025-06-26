@@ -189,6 +189,47 @@ qui fera en sorte que tout avertissement ("warning") sera interprété comme
 une erreur qui arrêtera la compilation --visant encore ici à régler ces
 avertissements.
 
+Production du PDF final
+-----------------------
+
+L'UQAC demande à ce que le PDF final soit au format
+[PDF/A](https://en.wikipedia.org/wiki/PDF/A), selon le *Guide de création
+des fichiers pour le dépôt final*.
+
+### Si vous travaillez en local
+
+La compilation produit des documents PDF/A par défaut, il n'y a donc rien de
+spécial à faire pour cette étape.
+
+### Si vous utilisez Overleaf
+
+Il faut savoir que la plateforme exécute `pdflatex` et les outils connexes
+dans un environnement *sandbox* avec un accès système restreint. Ceci a pour
+conséquence un support limité, voire inexistant, pour certaines
+étapes essentielles à la génération de documents PDF/A valides. Lorsque
+désactivées (et ce même si les instructions sont bien présentes dans la
+source), la sortie reste au format PDF standard (par exemple, version 1.7)
+sans conformité d'archivage. (Certaines instructions, comme
+[celles-ci](https://www.overleaf.com/latex/templates/creating-pdf-slash-a-and-pdf-slash-x-files-with-the-pdfx-package/bbbycnbyqhnm),
+ne fonctionnent malheureusement pas et produisent un PDF dont la version
+annoncée est PDF-1.7).
+
+Vous avez le choix de:
+
+1. Cloner le projet localement et le compiler (méthode préférable). On
+   peut vérifier la conformité du gabarit compilé selon cette méthode
+   avec un l'outil gratuit de vérification [VeraPDF](https://verapdf.org).
+2. Cloner le projet localement et utiliser la commande `make pdfa`, qui
+   produira un fichier appelé `these-pdfa3b.pdf` (méthode moins
+   préférable, produit de plus gros fichiers). Cette commande nécessite
+   que [Ghostscript](https://www.ghostscript.com) soit installé sur votre
+   ordinateur. On peut aussi vérifier la conformité de cette méthode avec le
+   même outil.)
+3. Utiliser un outil de conversion en ligne, comme celui de
+   [pdfforge.org](https://www.pdfforge.org/online/en/pdf-to-pdfa). (Soyez
+   cependant conscient que ce faisant, vous remettez un document à un
+   service tiers. Vérifiez bien les termes d'utilisation.)
+
 Quelques bonnes pratiques
 -------------------------
 
@@ -246,14 +287,6 @@ compilation peut se rendre jusqu'au bout en appuyant sur Enter pour passer
 par-dessus ces messages, la manoeuvre a des chances de ne pas fonctionner
 sur tous les ordinateurs. Presque toujours, la présence d'un message
 d'erreur indique un vrai problème avec vos sources --alors réglez-le!
-
-Production du PDF final
------------------------
-
-L'UQAC demande à ce que le PDF final soit au format
-[PDF/A](https://en.wikipedia.org/wiki/PDF/A), selon le *Guide de création
-des fichiers pour le dépôt final*. La gabarit produit des documents PDF/A
-par défaut, il n'y a donc rien de spécial à faire pour cette étape.
 
 À propos de ce gabarit
 ----------------------

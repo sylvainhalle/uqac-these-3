@@ -1,0 +1,11 @@
+%!
+% PDF/A OutputIntent pdfmark for sRGB
+[
+  /OutputIntent <<
+    /Type /OutputIntent
+    /S /GTS_PDFA1
+    /OutputConditionIdentifier (sRGB IEC61966-2.1)
+    /Info (sRGB IEC61966-2.1)
+    /RegistryName (http://www.color.org)
+  >> /PUT pdfmark
+]

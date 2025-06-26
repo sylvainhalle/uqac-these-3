@@ -62,9 +62,20 @@ aspell:
 textidote:
 	textidote --check fr --read-all $(file)
 
-#https://www.math.cmu.edu/~gautam/sj/blog/20221217-pdfa-conversion.html
+#Tweak of https://www.math.cmu.edu/~gautam/sj/blog/20221217-pdfa-conversion.html
 pdfa: $(FILENAME).pdf $(FILENAME).xmpdata
-	gs -dPDFA=1 -dNOOUTERSAVE -sProcessColorModel=DeviceRGB -sDEVICE=pdfwrite -dPDFACompatibilityPolicy=1 -o $(FILENAME)-pdfa.pdf $(FILENAME).pdf
+	gs -dBATCH -dNOPAUSE -dNOOUTERSAVE \
+   -sDEVICE=pdfwrite \
+   -dPDFA=3 \
+   -dCompatibilityLevel=1.7 \
+   -dPDFACompatibilityPolicy=1 \
+   -dEmbedAllFonts=true \
+   -dUseCIEColor=true \
+   -sColorConversionStrategy=UseDeviceIndependentColor \
+   -sProcessColorModel=DeviceRGB \
+   -sPDFAICCProfile=./sRGB_IEC61966-2-1.icc \
+   -sOutputFile=$(FILENAME)-pdfa3b.pdf \
+   $(FILENAME).pdf
 
 flush: clean
 	$(RM) $(FILENAME).pdf
