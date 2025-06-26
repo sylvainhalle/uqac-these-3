@@ -24,20 +24,20 @@ $(FILENAME).pdf: $(FILENAME).tex $(SRC)
 
 help:
 	@echo "Makefile pour compiler la thèse de l'UQAC                              "
-	@echo '                                                                       '
-	@echo 'Usage:                                                                 '
-	@echo '   make once                        compile la thèse une fois          '
-	@echo '   make all                         compile au complet (3x avec BibTeX)'
-	@echo '   make clean                       efface les fichiers temporaires    '
-	@echo '   make flush                       clean + efface le pdf de la thèse  '
+	@echo "                                                                       "
+	@echo "Usage:                                                                 "
+	@echo "   make once                        compile la thèse une fois          "
+	@echo "   make all                         compile au complet (3x avec BibTeX)"
+	@echo "   make clean                       efface les fichiers temporaires    "
+	@echo "   make flush                       clean + efface le pdf de la thèse  "
 	@echo "   make install                     installe la classe dans l'arbre    "
-	@echo '                                      texmf local                      '
+	@echo "                                      texmf local                      "
 	@echo "   make file=chapX.tex aspell       passe le correcteur Aspell sur le  "
-	@echo '                                      fichier chapX.tex                '
+	@echo "                                      fichier chapX.tex                "
 	@echo "   make file=chapX.tex textidote    passe TeXtidote sur le fichier     "
-	@echo '                                      chapX.tex                        '
-	@echo '   make metadata                    ajoute le champ `Author` au PDF    '
-	@echo '                                                                       '
+	@echo "                                      chapX.tex                        "
+	@echo "   make pdfa                        convertit these.pdf au format PDF/A"
+	@echo "                                                                       "
 
 all: $(SRC)
 	pdflatex -interaction=batchmode $(FILENAME).tex
@@ -62,10 +62,20 @@ aspell:
 textidote:
 	textidote --check fr --read-all $(file)
 
-metadata:
-	pdftk $(FILENAME).pdf update_info_utf8 these.info output $(FILENAME)2.pdf
-	$(CP) $(FILENAME)2.pdf $(FILENAME).pdf
-	$(RM) $(FILENAME)2.pdf
+pdfa: $(FILENAME).pdf $(FILENAME).xmpdata
+	gs -dBATCH -dNOPAUSE -dNOOUTERSAVE \
+	   -sDEVICE=pdfwrite \
+	   -dPDFA=2 \
+	   -dCompatibilityLevel=1.4 \
+	   -dPDFACompatibilityPolicy=1 \
+	   -sColorConversionStrategy=UseDeviceIndependentColor \
+	   -sProcessColorModel=DeviceRGB \
+	   -sPDFAICCProfile=./sRGB_IEC61966-2-1_black_scaled.icc \
+	   -dEmbedAllFonts=true \
+	   -dUseCIEColor=true \
+	   -sOutputFile=$(FILENAME)-pdfa.pdf \
+	   $(FILENAME).pdf
+	#exiftool -tagsFromFile $(FILENAME).xmpdata -overwrite_original -XMP $(FILENAME)-pdfa.pdf
 
 flush: clean
 	$(RM) $(FILENAME).pdf

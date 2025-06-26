@@ -40,6 +40,27 @@
 %% Impose l'inclusion de toutes les polices nécessaires
 \pdfinclusioncopyfonts=1
 
+% --------------------------------------------------------------------------
+% Génération dynamique du fichier .xmpdata pour hyperxmp
+% --------------------------------------------------------------------------
+\newcommand{\uqacEscapePDFMark}[1]{%
+  \begingroup
+    \edef\x{\endgroup\detokenize{#1}}%
+  \x
+}
+\AtBeginDocument{
+\newwrite\uqacxmpfile
+    \immediate\openout\uqacxmpfile=\jobname.xmpdata
+    \immediate\write\uqacxmpfile{Title={\@title},}
+    \immediate\write\uqacxmpfile{Author={\@author},}
+    \immediate\write\uqacxmpfile{Subject={Thèse présentée à l'UQAC},}
+    \immediate\write\uqacxmpfile{Keywords={UQAC, thèse, DIM, informatique},}
+    \immediate\write\uqacxmpfile{Creator={uqac-these.cls},}
+    \immediate\write\uqacxmpfile{Producer={pdfTeX + uqac-these.cls},}
+    \immediate\write\uqacxmpfile{LangCode=fr-CA}
+    \immediate\closeout\uqacxmpfile
+}
+
 %% ------------------------
 %% Commande permettant de définir la discipline du mémoire ou de la thèse.
 %% Utilisée pour générer la page titre.
