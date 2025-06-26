@@ -33,6 +33,13 @@
 \def\uqacDate{2025/06/25}
 \ProvidesClass{uqac-these}[\uqacDate These DIM UQAC, V\uqacVersion par Sylvain Hallé \& Florentin Thullier]
 
+%% Cette ligne évite une panoplie de warnings de pdflatex si on inclut
+%% des figures PDF de version 1.6 ou supérieure
+\pdfminorversion=7
+
+%% Impose l'inclusion de toutes les polices nécessaires
+\pdfinclusioncopyfonts=1
+
 %% ------------------------
 %% Commande permettant de définir la discipline du mémoire ou de la thèse.
 %% Utilisée pour générer la page titre.
@@ -562,10 +569,6 @@
 \widowpenalty10000
 \clubpenalty10000
 
-%% Cette ligne évite une panoplie de warnings de pdflatex si on inclut
-%% des figures PDF de version 1.6 ou supérieure
-\pdfminorversion=7
-
 %% On ignore les warnings de pdflatex sur les "PDF page groups"
 %% (n'a aucun effet dans notre cas)
 \pdfsuppresswarningpagegroup=1
@@ -757,10 +760,12 @@
 %% manipulations (https://tex.stackexchange.com/a/535849).
 %% ------------------------
 \hypersetup{%
-    hidelinks,%
-    bookmarks={true},%
-    keeppdfinfo,
-    pdfcreator={Gabarit de th\`ese UQAC DIM v\uqacVersion}
+  unicode,
+  hidelinks,%
+  pdfapart=2,
+  pdfaconformance=B,
+  keeppdfinfo,
+  pdfcreator={Gabarit de th\`ese UQAC DIM v\uqacVersion}
 }
 
 %% Codes pour jEdit
