@@ -171,7 +171,8 @@ Dans ce mode, le comportement de certaines commandes est modifié:
   arrêter la compilation. Ceci évite de laisser ces marqueurs par mégarde
   dans un document que l'on pense final.
 - S'il reste des références non définies, elles vont elles aussi provoquer
-  un échec de la compilation.
+  un échec de la compilation. De même, si des figures ou des tableaux ne
+  sont jamais référencés dans le texte, une erreur sera également lancée.
 
 L'objectif de ces erreurs "intentionnelles" est d'éviter que ces problèmes
 ne se rendent trop loin dans le processus d'évaluation et provoquent des

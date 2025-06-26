@@ -87,7 +87,6 @@
 %% ------------------------
 %% Choix de la langue du document
 %% ------------------------
-\makeatletter
 %% Français
 \def\uqacFrancais{false}
 \DeclareOption{francais}{%
@@ -99,17 +98,14 @@
 \DeclareOption{anglais}{%
   \def\uqacAnglais{true}
 }
-\makeatother
 
 %% ------------------------
 %% Option brouillon
 %% ------------------------
-\makeatletter
 \def\uqacModeBrouillon{false} %% Pas brouillon par défaut
 \DeclareOption{brouillon}{%
   \def\uqacModeBrouillon{true}
 }
-\makeatother
 
 %% ------------------------
 %% Passage des autres options à la classe book
@@ -129,9 +125,30 @@
 \fi
 
 %% ------------------------
+%% Redéfinition de \title et \author pour captuer les méta-données PDF
+%% ------------------------
+\makeatletter
+\newcommand{\uqacTitle}{}
+\newcommand{\uqacAuthor}{}
+
+\renewcommand{\title}[1]{%
+  \protected@edef\uqacTitle{#1}%
+  \protected@edef\@title{#1}%
+}
+
+\renewcommand{\author}[1]{%
+  \protected@edef\uqacAuthor{#1}%
+  \protected@edef\@author{#1}%
+}
+\makeatother
+
+%% ------------------------
 %% On ne met ici que les packages dont l'absence empêche la compilation
 %% du template vide. Incluez vos autres packages (optionnels) dans la thèse.
 %% ------------------------
+%% UTF-8 comme jeu de caractères
+\RequirePackage[utf8]{inputenc}
+%% Polices de caractères Type-1
 \RequirePackage[T1]{fontenc}
 %% Gestion des marges
 \RequirePackage{geometry}
@@ -188,8 +205,7 @@
 \RequirePackage{acro}
 %% Gestion des méta-données PDF et affichage des URLs
 \RequirePackage[pdfa]{hyperref}
-\usepackage{hyperxmp}[2020/03/01]
-\usepackage{embedfile}[2020/04/01]
+\RequirePackage{hyperxmp}%[2020/03/01]
 
 %% ------------------------
 %% Définition des polices par défaut
@@ -740,18 +756,12 @@
 %% le document produit soit conforme au standard PDF/A, ce qui requiert quelques
 %% manipulations (https://tex.stackexchange.com/a/535849).
 %% ------------------------
-\makeatletter
 \hypersetup{%
-  pdflang=la,
-  pdfapart=3, %set to 1 for PDF/A-1
-  pdfaconformance=B
-  hidelinks,
-  bookmarks = {true},
-  pdfauthor = {\@author},
-  pdftitle = {\@title},
-  pdfproducer = {Package uqac-these-dim V\uqacVersion}
+    hidelinks,%
+    bookmarks={true},%
+    keeppdfinfo,
+    pdfcreator={Gabarit de th\`ese UQAC DIM v\uqacVersion}
 }
-\makeatother
 
 %% Codes pour jEdit
 %% :mode=latex:wrap=none:
