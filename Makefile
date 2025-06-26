@@ -62,22 +62,11 @@ aspell:
 textidote:
 	textidote --check fr --read-all $(file)
 
+#https://www.math.cmu.edu/~gautam/sj/blog/20221217-pdfa-conversion.html
 pdfa: $(FILENAME).pdf $(FILENAME).xmpdata
-	gs -dBATCH -dNOPAUSE -dNOOUTERSAVE \
-	   -sDEVICE=pdfwrite \
-	   -dPDFA=2 \
-	   -dCompatibilityLevel=1.4 \
-	   -dPDFACompatibilityPolicy=1 \
-	   -sColorConversionStrategy=UseDeviceIndependentColor \
-	   -sProcessColorModel=DeviceRGB \
-	   -sPDFAICCProfile=./sRGB_IEC61966-2-1_black_scaled.icc \
-	   -dEmbedAllFonts=true \
-	   -dUseCIEColor=true \
-	   -sOutputFile=$(FILENAME)-pdfa.pdf \
-	   $(FILENAME).pdf
-	#exiftool -tagsFromFile $(FILENAME).xmpdata -overwrite_original -XMP $(FILENAME)-pdfa.pdf
+	gs -dPDFA=1 -dNOOUTERSAVE -sProcessColorModel=DeviceRGB -sDEVICE=pdfwrite -dPDFACompatibilityPolicy=1 -o $(FILENAME)-pdfa.pdf $(FILENAME).pdf
 
 flush: clean
 	$(RM) $(FILENAME).pdf
 
-.PHONY : all clean once install flush help aspell metadata
+.PHONY : all clean once install flush help aspell textidote pdfa

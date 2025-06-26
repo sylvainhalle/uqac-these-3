@@ -44,10 +44,8 @@ Pour travailler en local, il faut minimalement:
   [Vim](https://www.vim.org/)
 
 Il est également possible de créer un nouveau projet sur
-[Overleaf](https://overleaf.com), et de simplement téléverser tous les
-documents de ce dépôt afin de pouvoir travailler. On doit définir
-`these.tex` comme étant le document principal et `pdflatex` comme
-compilateur.
+[Overleaf](https://overleaf.com). Il suffit de chercher le modèle appelé
+"Gabarit mémoire et thèse UQAC DIM v3".
 
 Documentation LaTeX
 -------------------
@@ -75,13 +73,19 @@ informatique:
 Compilation
 -----------
 
+Si vous travaillez en local, vous pouvez évidemment compiler le document en
+appelant à la ligne de commande:
+
+    pdflatex these
+
+Cependant, il existe deux autres outils plus appropriés.
+
 ### Avec `latexmk`
 
-Si vous travaillez en local, la manière privilégiée de compiler la thèse est
-au moyen de l'outil [`latexmk`](https://mg.readthedocs.io/latexmk.html), qui
-s'occupe des multiples passes de compilation, les appels à BibTeX, etc.
-L'outil est normalement installé par défaut avec la plupart des
-distributions LaTeX.
+La manière privilégiée de compiler la thèse est au moyen de l'outil
+[`latexmk`](https://mg.readthedocs.io/latexmk.html), qui s'occupe des
+multiples passes de compilation, les appels à BibTeX, etc. L'outil est
+normalement installé par défaut avec la plupart des distributions LaTeX.
 
 À la ligne de commande, dans le dossier racine du projet, il suffit de
 lancer:
