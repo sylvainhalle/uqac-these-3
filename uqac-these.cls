@@ -207,7 +207,7 @@
 \RequirePackage{caption}
 %% Mise en majuscules de la page titre et des en-tête de chapitres
 \RequirePackage{textcase}
-%% Interligne simple dans les listes (table des matières, etc.), double ailleurs
+%% Modification des interlignes
 \RequirePackage{setspace}
 %% Paramètres de la table des matières
 \RequirePackage{tocloft}
@@ -234,6 +234,8 @@
 \makeatletter
 \ifthenelse{\equal{\uqacFrancais}{true}}{
   \RequirePackage[french]{babel}
+  % https://latex.org/forum/viewtopic.php?t=30712
+  \frenchbsetup{SmallCapsFigTabCaptions=false}
 }{\ifthenelse{\equal{\uqacAnglais}{true}}{
   \RequirePackage[english]{babel}
 }{}}
@@ -342,6 +344,7 @@
 %% ------------------------
 \newlength{\doubleinter}
 \setlength{\doubleinter}{1\baselineskip}
+\def\uqacInterligne{1.75}
 
 %% ------------------------
 %% Marges de la page et interligne
@@ -382,17 +385,27 @@
 
 % Style for numbered chapters
 \titleformat{\chapter}[block]%
-  {\centering\sffamily\bfseries\selectfont}%
-  {\MakeTextUppercase{Chapitre \thechapter}}%
-  {0cm}%
-  {\vskip 0pt\MakeTextUppercase{#1}}%
+{\centering\sffamily\bfseries\selectfont}%
+{\MakeTextUppercase{Chapitre \thechapter}}%
+{0cm}%
+{\vskip 0pt\MakeTextUppercase{#1}}%
 
-% Style for unnumbered chapters (e.g., LoF, Bibliography)
+% Style des chapitres sans numéro (ex.: liste des figures, bibliographie)
 \titleformat{name=\chapter,numberless}[block]%
-  {\normalfont\centering\sffamily\bfseries\selectfont}%
-  {}%
-  {0cm}%
-  {\vskip 0pt\MakeTextUppercase{#1}}%
+{\normalfont\centering\sffamily\bfseries\selectfont}%
+{}%
+{0cm}%
+{\vskip 0pt\MakeTextUppercase{#1}}%
+
+% Style des sections: sans serif
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\titleformat{\section}%
+[hang]%
+{\sffamily\bfseries\selectfont}%
+{\MakeTextUppercase{\thesection}}
+{0.5cm}% Séparation d'avec le corps du chapitre
+{\MakeTextUppercase{#1}}% Code à exécuter avant le titre
+{}% Code à exécuter après le titre  
 
 \renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
 \titleformat{\subsection}%
@@ -701,11 +714,14 @@
 %% ------------------------
 \makeatletter
 
+\newlength{\uqacTitreEspace}
+\setlength{\uqacTitreEspace}{2.7cm}
+
 %% Table des matières
 \newcommand{\SansTableOfContents}{%
   \cleardoublepage
   \thispagestyle{plain}%
-  \vspace*{2.35cm}%
+  \vspace*{\uqacTitreEspace}%
   {\centering
     \sffamily\bfseries\selectfont
     \MakeTextUppercase{\contentsname}\par
@@ -723,7 +739,7 @@
 \newcommand{\SansListOfFigures}{%
   \cleardoublepage
   \thispagestyle{plain}%
-  \vspace*{2.35cm}%
+  \vspace*{\uqacTitreEspace}%
   {\centering
     \sffamily\bfseries\selectfont
     \MakeTextUppercase{\listfigurename}\par
@@ -741,7 +757,7 @@
 \newcommand{\SansListOfTables}{%
   \cleardoublepage
   \thispagestyle{plain}%
-  \vspace*{2.35cm}%
+  \vspace*{\uqacTitreEspace}%
   {\centering
     \sffamily\bfseries\selectfont
     \MakeTextUppercase{\listtablename}\par
@@ -759,7 +775,7 @@
 \newcommand{\SansListOfSources}{%
   \cleardoublepage
   \thispagestyle{plain}%
-  \vspace*{2.35cm}%
+  \vspace*{\uqacTitreEspace}%
   {\centering
     \sffamily\bfseries\selectfont
     \MakeTextUppercase{\lstlistlistingname}\par
@@ -777,7 +793,7 @@
 \newcommand{\SansBibliography}[1]{%
   \cleardoublepage
   \thispagestyle{plain}%
-  \vspace*{2.35cm}%
+  \vspace*{\uqacTitreEspace}%
   {\centering
     \sffamily\bfseries\selectfont
     \MakeTextUppercase{\bibname}\par
