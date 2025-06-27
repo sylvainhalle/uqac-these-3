@@ -128,6 +128,16 @@
 }
 
 %% ------------------------
+%% Détection explicite de l'option oneside ou twoside
+%% ------------------------
+\makeatletter
+\newif\ifuqac@twoside
+\uqac@twosidefalse % valeur par défaut : false
+\DeclareOption{twoside}{\uqac@twosidetrue}
+\DeclareOption{oneside}{\uqac@twosidefalse}
+\makeatother
+
+%% ------------------------
 %% Option brouillon
 %% ------------------------
 \def\uqacModeBrouillon{false} %% Pas brouillon par défaut
@@ -144,13 +154,24 @@
 \ProcessOptions
 
 %% ------------------------
-%% Chargement de la classe de base (book)
+%% Chargement de la classe de base (book). On distingue entre l'option
+%% twoside et oneside.
 %% ------------------------
+\makeatletter
 \ifx\pdfoutput\undefined
-\LoadClass[12pt,letterpaper,openright,dvips]{book}
+  \ifuqac@twoside
+    \LoadClass[12pt,letterpaper,twoside,openright,dvips]{book}
+  \else
+    \LoadClass[12pt,letterpaper,oneside,dvips]{book}
+  \fi
 \else
-\LoadClass[12pt,letterpaper,openright,pdftex]{book}
+  \ifuqac@twoside
+    \LoadClass[12pt,letterpaper,twoside,openright]{book}
+  \else
+    \LoadClass[12pt,letterpaper,oneside]{book}
+  \fi
 \fi
+\makeatother
 
 %% ------------------------
 %% Injection d'une section OutputIntents spécifiant un profil de couleur.
@@ -354,8 +375,16 @@
 %% ------------------------
 %% Style de la page
 %% ------------------------
+\makeatletter
+\ifthenelse{\boolean{@twoside}}{%
+\typeout{DEBUG TWO SIDE}
 \fancyhead[LO,RE]{}
 \fancyhead[RO,LE]{\thepage}
+}{
+\fancyhead[L]{}
+\fancyhead[R]{\thepage}
+}
+\makeatother
 \renewcommand{\footrulewidth}{0pt}
 \renewcommand{\headrulewidth}{0pt}
 \fancyfoot{}
