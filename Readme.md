@@ -14,8 +14,8 @@ En quelques étapes rapides:
 
 1. Décompressez le contenu de l'archive dans un répertoire de votre
    choix
-2. Ouvrez le fichier `these.tex`, trouvez-y les champs `\UqacTheseTitre`,
-   etc. et remplacez-les par les valeurs appropriées
+2. Ouvrez le fichier `these.tex`, trouvez-y les champs `\author`,
+   `\title`, etc. et remplacez-les par les valeurs appropriées
 3. Modifiez au besoin le préambule (la ligne débutant par `\documentclass`)
    pour remplacer *these* par *memoire*, *essai*, etc. selon le type de
    document à produire (modifie le contenu de la page titre auto-générée).
