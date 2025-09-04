@@ -1,7 +1,9 @@
 Gabarit de mémoire, thèse et essai du DIM
 =========================================
 
-par Sylvain Hallé et Florentin Thullier
+par Sylvain Hallé, Florentin Thullier, Éric Laberge
+
+<p><a href="https://www.overleaf.com/docs?snip_uri=https://github.com/sylvainhalle/uqac-these-3/archive/refs/heads/main.zip"><img src="ouvrir-overleaf-16.png?raw=true" alt="Ouvrir dans Overleaf"/></a></p>
 
 Comment utiliser ce gabarit
 ---------------------------
@@ -14,12 +16,12 @@ En quelques étapes rapides:
 
 1. Décompressez le contenu de l'archive dans un répertoire de votre
    choix
-2. Ouvrez le fichier `these.tex`, trouvez-y les champs `\author`,
-   `\title`, etc. et remplacez-les par les valeurs appropriées
+2. Ouvrez le fichier `these.tex`, trouvez-y les champs `\author`, `\title`,
+   `\date`, etc. et remplacez-les par les valeurs appropriées.
 3. Modifiez au besoin le préambule (la ligne débutant par `\documentclass`)
    pour remplacer *these* par *memoire*, *essai*, etc. selon le type de
    document à produire (modifie le contenu de la page titre auto-générée).
-   Faites-en de même pour la langue de rédaction (*francais* ou *english*).
+   Faites-en de même pour la langue de rédaction (*francais* ou *anglais*).
 4. Localisez la section "Document principal" et ajoutez autant de commandes
    include qu'il y a de fichiers à inclure dans votre document
 5. Modifiez au besoin la ligne `\bibliography` pour y inclure les fichiers
@@ -27,8 +29,8 @@ En quelques étapes rapides:
    `these.bib)`.
 
 Pour tout le reste, la classe utilise exactement les mêmes commandes et les
-mêmes environnements que la classe "book" qui vient par défaut avec LaTeX.
-Au besoin, lisez la documentation sur "book" pour comprendre comment
+mêmes environnements que la classe `book` qui vient par défaut avec LaTeX.
+Au besoin, lisez la documentation sur `book` pour comprendre comment
 utiliser uqac-these-dim.
 
 Prérequis
@@ -44,14 +46,16 @@ Pour travailler en local, il faut minimalement:
   [Vim](https://www.vim.org/)
 
 Il est également possible de créer un nouveau projet sur
-[Overleaf](https://overleaf.com). Il suffit de chercher le modèle appelé
-"Gabarit mémoire et thèse UQAC DIM v3".
+[Overleaf](https://overleaf.com). Il suffit de cliquer sur le bouton tout
+en haut de la page, ou de suivre [ce lien](https://www.overleaf.com/docs?snip_uri=https://github.com/sylvainhalle/uqac-these-3/archive/refs/heads/main.zip).
+ci-dessous:
+
 
 Documentation LaTeX
 -------------------
 
 La meilleure référence pour apprendre LaTeX s'appelle
-[Une courte introduction à LaTex](https://ctan.org/tex-archive/info/lshort/french).
+[*Une courte introduction à LaTeX*](https://ctan.org/tex-archive/info/lshort/french).
 
 Sinon, le contenu du gabarit fournit en version condensée tous les exemples
 dont vous pourriez avoir besoin pour la rédaction d'un texte en
@@ -102,7 +106,7 @@ Finalement, la commande la plus intéressante est:
 
 qui lance une visionneuse PDF affichant votre document et fait en sorte que
 chaque fois que vous modifiez quelque chose dans l'un de vos fichiers
-sources et enregistrez vos modifications, l'aperçu est automatiquement mis à
+source et enregistrez vos modifications, l'aperçu est automatiquement mis à
 jour (ne fonctionne pas avec Adobe Viewer, cependant).
 
 ### Avec `make`

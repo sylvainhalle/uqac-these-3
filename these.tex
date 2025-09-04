@@ -1,15 +1,29 @@
 %% -----------------------------------------------------------------------
-%% Modèle de thèse/mémoire/essai DIM UQAC
+%% Modèle de thèse/mémoire/essai DIM UQAC, version 3.0
+%% (c) 2012-2025  Sylvain Hallé, Florentin Thullier, Éric Laberge
+%% Dernière modification: 2025-09-04
 %% 
-%% Options de la classe:
-%%   - these, sujthese, projthese, memoire, essai, rapport: pour générer la
-%%     page de garde en fonction du type document
-%%   - francais, anglais : selon la langue dans laquelle doit être rédigé
-%%     le document
-%%   - brouillon: à utiliser pendant la rédaction, vérifications moins
-%%     strictes sur la syntaxe et la mise en forme
-%%  Toutes les options de la classe "book" sont acceptées; ainsi:
-%%   - twoside active la ise en page pour impression recto-verso
+%% Pour utiliser ce modèle:
+%% 
+%% 1. Décompressez le contenu de l'archive dans un répertoire de votre
+%%    choix (déjà fait si vous avez ouvert le projet dans Overleaf).
+%% 2. Ouvrez le fichier `these.tex`, trouvez-y les champs `\author`, `\title`,
+%%    `date` etc. et remplacez-les par les valeurs appropriées
+%% 3. Modifiez au besoin le préambule (la ligne débutant par `\documentclass`)
+%%    pour remplacer *these* par *memoire*, *essai*, etc. selon le type de
+%%    document à produire (modifie le contenu de la page titre auto-générée).
+%%    Faites-en de même pour la langue de rédaction (*francais* ou *anglais*).
+%% 4. Localisez la section "Document principal" et ajoutez autant de commandes
+%%    include qu'il y a de fichiers à inclure dans votre document.
+%% 5. Modifiez au besoin la ligne `\bibliography` pour y inclure les fichiers
+%%    `.bib` appropriés (ou alors mettez simplement vos références dans
+%%    `these.bib)`.
+%%
+%% Ce gabarit comprend plusieurs fonctionnalités utiles, référez-vous au
+%% fichier Readme ou à la page GitHub pour apprendre à les utiliser:
+%% https://github.com/sylvainhalle/uqac-these-3
+%%
+%% Bonne rédaction! ;-)
 %% -----------------------------------------------------------------------
 \documentclass[francais,brouillon,these]{uqac-these}
 
