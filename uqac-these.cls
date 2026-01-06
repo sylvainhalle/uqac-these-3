@@ -18,7 +18,7 @@
 %%
 %% This work consists of the file uqac-these.cls.
 %%
-%% Version: 2.0, last modified 2024-11-04
+%% Version: 3.1, last modified 2026-01-06
 %% --------------------------------------------------------------------------
 
 %% ------------------------
@@ -29,8 +29,8 @@
 %% ------------------------
 %% Version et date du package
 %% ------------------------
-\def\uqacVersion{3.0}
-\def\uqacDate{2025/06/25}
+\def\uqacVersion{3.1}
+\def\uqacDate{2026/01/06}
 \ProvidesClass{uqac-these}[\uqacDate These DIM UQAC, V\uqacVersion par Sylvain Hallé \& Florentin Thullier]
 
 %% Cette ligne évite une panoplie de warnings de pdflatex si on inclut
@@ -822,12 +822,6 @@
 \newcommand{\SansBibliography}[1]{%
   \cleardoublepage
   \thispagestyle{plain}%
-  \vspace*{\uqacTitreEspace}%
-  {\centering
-    \sffamily\bfseries\selectfont
-    \MakeTextUppercase{\bibname}\par
-  }%
-  \vspace{1cm}\par
   \addcontentsline{toc}{chapter}{\bibname}%
   \bibliography{#1}%
 }
